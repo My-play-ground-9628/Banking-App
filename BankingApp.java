@@ -64,7 +64,7 @@ public class BankingApp {
                     //Name validation 
                     do{
                         valid = true;
-                        System.out.println("\tEnter Customer Name: ");
+                        System.out.print("\tEnter Customer Name: ");
                         name = scanner.nextLine().toUpperCase();
                         if (name.isBlank()) {
                             System.out.printf(ERROR_MSG , "Name Can't be empty");
@@ -86,7 +86,7 @@ public class BankingApp {
                     do{
                         valid = true;
                         System.out.print("\tInitial Deposit: ");
-                        initialDeposit = scanner.nextInt() ;
+                        initialDeposit = scanner.nextInt();
                         scanner.nextLine();
 
                         if (initialDeposit < 5000) {
@@ -112,13 +112,103 @@ public class BankingApp {
                     names = newNames;
 
                     System.out.println();
-                    System.out.printf(SUCCESS_MSG, String.format("%s:%s has been saved successfully", initialDeposit, name));
+                    System.out.printf(SUCCESS_MSG, String.format("SDB-%05d:%s has been saved successfully", (names.length), name));
                     System.out.print("\tDo you want to continue adding? (Y/n)");
                     if (scanner.nextLine().strip().toUpperCase().equals("Y")) continue;
                     screen = DASHBOARD;
                     break;
                     
+                case DEPOSIT:
+                    String accNum;
+                    int index;
+                    
+                    do{
+                        valid = true;
+                        System.out.print("\tEnter Account Number: ");
+                        accNum = scanner.nextLine().toUpperCase().strip();
+                        
+                        if (accNum.isBlank()) {
+                            valid = false;
+                            System.out.print("\tDo you want to try again? (Y/n)");
+                            if (scanner.nextLine().strip().toUpperCase().equals("Y")) continue;
+                            screen = DASHBOARD;
+                            break;
+                        }else if (!accNum.startsWith("SDB-")) {
+                            valid = false;
+                            System.out.print("\tDo you want to continue adding? (Y/n)");
+                            if (scanner.nextLine().strip().toUpperCase().equals("Y")) continue;
+                            screen = DASHBOARD;
+                            break;
+                        }else if ((Integer.valueOf(accNum.substring(8))) > names.length){
+                            valid = false;
+                            System.out.print("\tDo you want to continue adding? (Y/n)");
+                            if (scanner.nextLine().strip().toUpperCase().equals("Y")) continue;
+                            screen = DASHBOARD;
+                            break;
+                        }
+                        break;
+                    }while(!valid);
+                    index = Integer.valueOf(accNum.substring(8));
+                    System.out.printf("\tCurrent Balance: Rs.%,d.00\n", deposits[index-1]);
+                    do{
+                        System.out.print("\tDeposit amount: ");
+                        int depositAmount = scanner.nextInt();
+                        scanner.nextLine();
 
+                        if (depositAmount < 500) {
+                            System.out.printf(ERROR_MSG, "Insufficient Amount");
+                            screen = DASHBOARD;
+                            continue;
+                        }
+                        int newBalance = deposits[index-1]+ depositAmount;
+                        deposits[index-1] = newBalance; 
+                        System.out.printf("\tNew Balance: Rs: %,d.00\n",deposits[index-1]);
+                        System.out.print("\tDo you want to continue ? (Y/n)");
+                        if (scanner.nextLine().strip().toUpperCase().equals("Y")) continue;
+                        screen = DASHBOARD;
+                        break;
+
+                    }while(!valid);
+                    
+                    
+                    
+                    
+
+                case WITHDRAWS:
+                    do{
+                        valid = true;
+                        System.out.print("\tEnter Account Number: ");
+                        accNum = scanner.nextLine().toUpperCase().strip();
+                        
+                        if (accNum.isBlank()) {
+                            valid = false;
+                            System.out.print("\tDo you want to try again? (Y/n)");
+                            if (scanner.nextLine().strip().toUpperCase().equals("Y")) continue;
+                            screen = DASHBOARD;
+                            break;
+                        }else if (!accNum.startsWith("SDB-")) {
+                            valid = false;
+                            System.out.print("\tDo you want to continue adding? (Y/n)");
+                            if (scanner.nextLine().strip().toUpperCase().equals("Y")) continue;
+                            screen = DASHBOARD;
+                            break;
+                        }else if ((Integer.valueOf(accNum.substring(8))) > names.length){
+                            valid = false;
+                            System.out.print("\tDo you want to continue adding? (Y/n)");
+                            if (scanner.nextLine().strip().toUpperCase().equals("Y")) continue;
+                            screen = DASHBOARD;
+                            break;
+                        }
+                        
+                    }while(!valid);
+
+                    
+                    
+                    
+
+                    
+                    
+                    
             
             }
 
