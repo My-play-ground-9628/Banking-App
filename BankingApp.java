@@ -120,7 +120,8 @@ public class BankingApp {
                     
                 case DEPOSIT:
                     String accNum;
-                    int index;
+                    int index=0;
+                    int depositAmount=0;
                     
                     do{
                         valid = true;
@@ -146,35 +147,33 @@ public class BankingApp {
                             screen = DASHBOARD;
                             break;
                         }
-                        break;
-                    }while(!valid);
-                    index = Integer.valueOf(accNum.substring(8));
-                    System.out.printf("\tCurrent Balance: Rs.%,d.00\n", deposits[index-1]);
-                    do{
-                        System.out.print("\tDeposit amount: ");
-                        int depositAmount = scanner.nextInt();
-                        scanner.nextLine();
+                        index = Integer.valueOf(accNum.substring(8));
+                        System.out.printf("\tCurrent Balance: Rs.%,d.00\n", deposits[index-1]);
+                        do{
+                            System.out.print("\tDeposit amount: ");
+                            depositAmount = scanner.nextInt();
+                            scanner.nextLine();
 
-                        if (depositAmount < 500) {
-                            System.out.printf(ERROR_MSG, "Insufficient Amount");
-                            screen = DASHBOARD;
-                            continue;
-                        }
-                        int newBalance = deposits[index-1]+ depositAmount;
-                        deposits[index-1] = newBalance; 
-                        System.out.printf("\tNew Balance: Rs: %,d.00\n",deposits[index-1]);
-                        System.out.print("\tDo you want to continue ? (Y/n)");
-                        if (scanner.nextLine().strip().toUpperCase().equals("Y")) continue;
-                        screen = DASHBOARD;
-                        break;
+                            if (depositAmount < 500) {
+                                System.out.printf(ERROR_MSG, "Insufficient Amount");
+                                screen = DASHBOARD;
+                                continue;
+                            }
+                        }while(!valid);
 
                     }while(!valid);
+                    int newBalance = deposits[index-1]+ depositAmount;
+                    deposits[index-1] = newBalance; 
+                    System.out.printf("\tNew Balance: Rs: %,d.00\n",deposits[index-1]);
+                    System.out.print("\tDo you want to continue ? (Y/n)");
+                    if (scanner.nextLine().strip().toUpperCase().equals("Y")) continue;
+                    screen = DASHBOARD;
+                    break;
                     
-                    
-                    
-                    
-
                 case WITHDRAWS:
+                    int withdrawtAmount=0;
+                    index = 0;
+                    
                     do{
                         valid = true;
                         System.out.print("\tEnter Account Number: ");
@@ -199,9 +198,37 @@ public class BankingApp {
                             screen = DASHBOARD;
                             break;
                         }
-                        
-                    }while(!valid);
+                        index = Integer.valueOf(accNum.substring(8));
+                        System.out.printf("\tCurrent Balance: Rs.%,d.00\n", deposits[index-1]);
+                        do{
+                            System.out.print("\tWithdraw amount: ");
+                            depositAmount = scanner.nextInt();
+                            scanner.nextLine();
 
+                            if (withdrawtAmount < 100) {
+                                System.out.printf(ERROR_MSG, "Minimum withdraw amount is Rs.100");
+                                screen = DASHBOARD;
+                                continue;
+                            }else if (deposits[index-1] - withdrawtAmount < 500) {
+                                System.out.printf(ERROR_MSG, "Minimum account balance is Rs.500");
+                                screen = DASHBOARD;
+                                continue;
+                            }else{
+                                newBalance = deposits[index-1] - withdrawtAmount;
+                                deposits[index-1] = newBalance; 
+                                System.out.printf("\tNew Balance: Rs: %,d.00\n",deposits[index-1]);
+                            }
+                                
+                    
+                        }while(!valid); 
+                        
+                    System.out.print("\tDo you want to continue ? (Y/n)");
+                    if (scanner.nextLine().strip().toUpperCase().equals("Y")) continue;
+                    screen = DASHBOARD;
+                    break;    
+                    }while(!valid);
+                      
+                    
                     
                     
                     
